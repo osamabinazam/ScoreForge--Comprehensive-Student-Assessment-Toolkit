@@ -10,9 +10,9 @@ This Python script is designed to process Excel files related to student assessm
 
 ## Prerequisites
 
-### Python Installation on windows
-Please use this link install python on windows: `https://phoenixnap.com/kb/how-to-install-python-3-windows`
-Please use this link install python on MacOS: `https://www.dataquest.io/blog/installing-python-on-mac/`
+### Python Installation on Windows
+Please use this link to install Python on Windows: `https://phoenixnap.com/kb/how-to-install-python-3-windows`
+Please use this link to install Python on MacOS: `https://www.dataquest.io/blog/installing-python-on-mac/`
 
 
 The script also requires the following Python packages:
@@ -43,13 +43,13 @@ python script_name.py
 
 ## Menu Options
 
-1. **Enter Questions for Credit**: Allows you to input questions along with correct answers and point values.
+1. **Enter Questions for Credit**: You can input questions, correct answers, and point values.
 
 2. **Update Student Scores**: Updates student scores based on the entered questions for credit.
 
 3. **Create Formatted File for Campus Interface**: Generates a formatted CSV file for campus integration.
 
-4. **Print Question Analysis**: Print Detail Question Analysis data on console.
+4. **Print Question Analysis**: Print Detail Question Analysis data on the console.
 
 5. **Exit**: Exits the script.
 
@@ -61,7 +61,7 @@ Ensure that your Excel files are placed in the `assets` folder, and adjust the f
 `AssessmentID Proctored Assessment CSV Export (11).xls'` for assessment data.
 
 ## Output File
-Updated CSV file will be exported in `output` folder. 
+The updated CSV file will be exported in the `output` folder. 
 
 ## Issues
 
