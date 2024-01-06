@@ -2,7 +2,7 @@
 
 ---
 
-# Script Name: `update_score.py`
+# Script Name: `ScoreForge: Comprehensive Student Assessment Toolkit`
 
 ## Description
 
