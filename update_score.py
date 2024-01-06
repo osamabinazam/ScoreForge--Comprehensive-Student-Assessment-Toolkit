@@ -257,29 +257,7 @@ def split_answers_and_keys(answer_string):
 
     return answers
 
-# def update_student_scores(question_file,  questions_for_credit):
-
-#     print("Updating student scores...")
-#     print(questions_for_credit)
-#     for sheet in question_file:
-#         print(sheet)
-#         for row in question_file[sheet]:
-#             print("\n\n")
-
-#             if str(row['Question Number']) in questions_for_credit:
-                
-#                 correct_answers = questions_for_credit[str(row['Question Number'])]['correct_answers']
-#                 print("Corrected Answers for the question are :" , correct_answers)
-#                 points = questions_for_credit[str(row['Question Number'])]['points']
-#                 print("Points to give : ",points)
-#                 if  row['Is Correct'] == 'InCorrect'  :
-#                     row['Points Received'] = points
-#                     # row['Points Possible'] += points
-#                     row['Is Correct'] = 'Correct'
-#                 else:
-#                     print("Error")
-
-#             printRow(row)
+# Update scores
 def update_student_scores(question_file, questions_for_credit):
 
     if not questions_for_credit:
