@@ -2,7 +2,7 @@
 
 ---
 
-# Script Name: `ScoreForge: Comprehensive Student Assessment Toolkit`
+# `ScoreForge: Comprehensive Student Assessment Toolkit`
 
 ## Description
 
