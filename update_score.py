@@ -68,27 +68,42 @@ def read_excel_file(file_path):
 
 
 # This function is used to process the excel file and return the dictionary of data
-def process_excel_file(excel_file, skiprows=0):
+def process_excel_file(excel_file, skiprows=0, nrows=None):
     # Process the Excel file, reading each sheet and converting to a dictionary
     if excel_file is None:
         return {}
+    
 
     sheet_data = {}
     sheets = excel_file.sheet_names
+    if not nrows:
+        # Loop through each sheet in the Excel file
+        for sheet in sheets:
+            # print(f"\nProcessing Sheet: {sheet}")
 
-    # Loop through each sheet in the Excel file
-    for sheet in sheets:
-        # print(f"\nProcessing Sheet: {sheet}")
+            # Read each sheet into a DataFrame
+            try:
+                df = pd.read_excel(excel_file, sheet_name=sheet, skiprows=skiprows)
 
-        # Read each sheet into a DataFrame
-        try:
-            df = pd.read_excel(excel_file, sheet_name=sheet, skiprows=skiprows)
+                # Convert the DataFrame to a list of dictionaries
+                data_list = df.to_dict(orient='records')
+                sheet_data[sheet] = data_list
+            except Exception as e:
+                print(f"Error processing sheet {sheet}: {e}")
+    else:
+        # Loop through each sheet in the Excel file
+        for sheet in sheets:
+            # print(f"\nProcessing Sheet: {sheet}")
 
-            # Convert the DataFrame to a list of dictionaries
-            data_list = df.to_dict(orient='records')
-            sheet_data[sheet] = data_list
-        except Exception as e:
-            print(f"Error processing sheet {sheet}: {e}")
+            # Read each sheet into a DataFrame
+            try:
+                df = pd.read_excel(excel_file, sheet_name=sheet, skiprows=0, nrows=nrows)
+
+                # Convert the DataFrame to a list of dictionaries
+                data_list = df.to_dict(orient='records')
+                sheet_data[sheet] = data_list
+            except Exception as e:
+                print(f"Error processing sheet {sheet}: {e}")
     
     return sheet_data
 
@@ -167,7 +182,7 @@ def export_data_to_csv(dqad):
     clear_console()
 
 # This function is used to update excel files
-def export_to_excel(data_dict, filename):
+def export_to_excel(data_dict, filename, student_info):
     """
     Export multiple DataFrames to an Excel file, each DataFrame in a separate sheet.
 
@@ -178,13 +193,12 @@ def export_to_excel(data_dict, filename):
     sheets = list(data_dict.keys())
 
 
-
     
     try:
         with pd.ExcelWriter(filename, engine='openpyxl') as writer:
             
             for sheet in sheets:
-                data_frame = pd.DataFrame(data_dict[sheet])
+                data_frame = pd.DataFrame((data_dict[sheet]))
                 if not data_frame.empty:
                     data_frame.to_excel(writer, sheet_name=sheet, index=False)
                 else:
@@ -389,7 +403,7 @@ def print_question_analysis(data, questions_for_credit):
             break
 
 # This function is used to display Menu  to the user 
-def menu(dqad_data, ace_data):
+def menu(dqad_data, ace_data, student_info):
 
     print("\n\nEverything looks good. Please  select the  option from the  menu below")
     questions_for_credit= {}
@@ -416,7 +430,7 @@ def menu(dqad_data, ace_data):
             elif response == -2:
                 print("No data to update.")
             else:
-                export_to_excel(dqad_data, os.path.join(os.getcwd(),'output/DetailQuestionAnalysis (22).xlsx'))
+                export_to_excel(dqad_data, os.path.join(os.getcwd(),'output/DetailQuestionAnalysis (22).xlsx'), student_info)
                 print("Student scores have been updated.")
                 
         
@@ -474,10 +488,14 @@ def main():
     except Exception as e:
         print(f"Error loading Excel files!, Please check the  format of the excel files:")
         return
+    
+    student_info = process_excel_file(dqad_excel, nrows=5)
+    
 
     # export_to_excel(dqad_data, os.path.join(os.getcwd(),'output/DetailQuestionAnalysis (22).xlsx'))
     # Display the menu
-    menu(dqad_data, ace_data)
+    # clear_console()
+    menu(dqad_data, ace_data, student_info)
 
 
 if __name__ == "__main__":
