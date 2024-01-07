@@ -113,7 +113,7 @@ def  generate_data_for_campus_interface(dqad_data , data_to_export):
     
     data = []
     # Replace 'your_file.csv' with the path to your CSV file
-    file_path = '/Users/am/Desktop/Sajid/Python Script Project/assets/2023-12-22T1733_Grades-APPLIED_PHARMACOLOGY__Florkey.csv'
+    file_path = os.path.join(os.getcwd(),'assets/2023-12-22T1733_Grades-APPLIED_PHARMACOLOGY__Florkey.csv')
 
     # Read  the CSV file
     df = pd.read_csv(file_path)
@@ -164,7 +164,35 @@ def export_data_to_csv(dqad):
     df = pd.DataFrame(data_to_export)
     df.to_csv(os.path.join(os.getcwd(),'output/2023-12-22T1733_Grades-APPLIED_PHARMACOLOGY__Florkey.csv'), index=False, header=False)
    
-    # clear_console()
+    clear_console()
+
+# This function is used to update excel files
+def export_to_excel(data_dict, filename):
+    """
+    Export multiple DataFrames to an Excel file, each DataFrame in a separate sheet.
+
+    :@param data_dict: Dictionary of DataFrames to export, with sheet names as keys
+    :@param filename: Name of the Excel file to create
+    """
+
+    sheets = list(data_dict.keys())
+
+
+
+    
+    try:
+        with pd.ExcelWriter(filename, engine='openpyxl') as writer:
+            
+            for sheet in sheets:
+                data_frame = pd.DataFrame(data_dict[sheet])
+                if not data_frame.empty:
+                    data_frame.to_excel(writer, sheet_name=sheet, index=False)
+                else:
+                    print(f"No data to export for sheet {sheet}.")
+        print(f"File '{filename}' has been created successfully with multiple sheets.")
+    except Exception as e:
+        print(f"Error in exporting to Excel: {e}")
+
 
 # Enter Questions for Credit
 def enter_questions_for_credit():
@@ -184,8 +212,8 @@ def enter_questions_for_credit():
             if not question.isdigit():
                 raise ValueError("Invalid question number. Please enter a numeric value.")
 
-            correct_answers_input = input(f"Enter correct answers for question {question} (e.g., A,C,E) separated by commas: ")
-            if not correct_answers_input.replace(",", "").isalpha():
+            correct_answers_input = input(f"Enter correct answers for question {question} (e.g., Answer-one,Answer-2,Answer-3) separated by commas: ")
+            if not correct_answers_input.replace(",", "").isalnum():
                 raise ValueError("Invalid format for answers. Please enter letters separated by commas.")
 
             correct_answers = [answer.strip().upper() for answer in correct_answers_input.split(',')]
@@ -298,6 +326,8 @@ def update_student_scores(question_file, questions_for_credit):
 
                 row['Points Received'] = total_points
                 row['Is Correct'] = 'Partial' if total_points > 0  and total_points <int(row['Points Possible']) else row['Is Correct']
+                row['Points Possible'] = question_info['points']
+                row['Key'] = question_info['correct_answers']
 
             else:
                
@@ -324,34 +354,39 @@ def update_student_scores(question_file, questions_for_credit):
     return 0
 
 # This function is used to print the row
-def print_question_analysis(data):
+def print_question_analysis(data, questions_for_credit):
     if not data:
         print("No data to display.")
-        return
+        return 
     
-    for sheet in data:
-        print(sheet)
+    if not questions_for_credit:
+        print("No questions for credit have been entered.")
+        return 
+    
+    sheets = list(data.keys())
+    
+    
+    
+    for sheet in sheets:
+        print(f"\n\nStudent Name: {sheet}")
         for row in data[sheet]:
-            print("Question Number : ", row['Question Number'])
-            print("Question: ", row['Question'])
-            print("Question Type : ", row['Question Type'])
-            print("Student Answer : ", row['Student Answer'])
-            print("Key : ", row['Key'])
-            print("Points Received : ", row['Points Received'])
-            print("Points Possible : ", row['Points Possible'])
-            print("Is Correct : ", row['Is Correct'])
-            print("\n\n")
+            if str(row['Question Number']) in questions_for_credit:
+                print("Question No: ", row['Question Number'])
+                print("Answers: ", row['Student Answer'])
+                print("Keys : ", row['Key'])
+                print("Points Received: ", row['Points Received'])
+                print("Points Possible: ", row['Points Possible'])
+                print("Is Correct: ", row['Is Correct'])
+                print("\n\n")
+    
 
         # Ask the user if they want to see the next sheet
-        next_sheet = input("\nDo you want to see the next sheet? (Type 'yes' to continue or press Enter to go back to menu: ")
+        next_sheet = input("\n(Type 'yes' to jump on next student detail or press Enter to go back to menu: ")
         
         clear_console()
         # If the user enters anything other than 'yes', break out of the loop
         if next_sheet.lower() != 'yes':
             break
-
-
-            
 
 # This function is used to display Menu  to the user 
 def menu(dqad_data, ace_data):
@@ -381,7 +416,9 @@ def menu(dqad_data, ace_data):
             elif response == -2:
                 print("No data to update.")
             else:
+                export_to_excel(dqad_data, os.path.join(os.getcwd(),'output/DetailQuestionAnalysis (22).xlsx'))
                 print("Student scores have been updated.")
+                
         
         elif choice == '3':
             # Placeholder for function to create formatted file for campus interface
@@ -391,7 +428,7 @@ def menu(dqad_data, ace_data):
         
         elif choice == '4':
             print("")
-            print_question_analysis(dqad_data)
+            print_question_analysis(dqad_data, questions_for_credit)
         
         elif choice == '5':
             print("Exiting the program.")
@@ -438,6 +475,7 @@ def main():
         print(f"Error loading Excel files!, Please check the  format of the excel files:")
         return
 
+    # export_to_excel(dqad_data, os.path.join(os.getcwd(),'output/DetailQuestionAnalysis (22).xlsx'))
     # Display the menu
     menu(dqad_data, ace_data)
 

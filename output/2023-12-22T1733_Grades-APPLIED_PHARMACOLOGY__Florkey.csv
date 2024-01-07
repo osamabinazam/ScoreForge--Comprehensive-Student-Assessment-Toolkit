@@ -1,7 +1,7 @@
 Student, ID,SIS User ID,SIS Login ID,Section,Assignment Current Points,Assignments Final Points,Assignments Current Score,Assignments Unposted Current Score,Assignments Final Score,Assignments Unposted Final Score,Current Points,Current Score,Unposted Current Score,Final Score,Unposted Final Score,
     Points Possible,,,,,(read only),(read only),(read only),(read only),(read only),(read only),(read only),(read only),(read only),(read only),(read only),(read only)
-"Student, 1",16476,1285402,1285402,NUR  3204 002,0,0,,,,,38.0,40.0,,,,
-"Student, 2",16563,1281297,1281297,NUR  3204 002,0,0,,,,,37.0,40.0,,,,
-"Student, 3",16004,1276897,1276897,NUR  3204 002,0,0,,,,,35.0,40.0,,,,
-"Student, 4",16274,1287323,1287323,NUR  3204 002,0,0,,,,,39.0,40.0,,,,
-"Student, 5",3413,1245848,1245848,NUR  3204 002,0,0,,,,,37.0,40.0,,,,
+"Student, 1",16476,1285402,1285402,NUR  3204 002,0,0,,,,,38.0,44.0,,,,
+"Student, 2",16563,1281297,1281297,NUR  3204 002,0,0,,,,,36.0,44.0,,,,
+"Student, 3",16004,1276897,1276897,NUR  3204 002,0,0,,,,,35.0,44.0,,,,
+"Student, 4",16274,1287323,1287323,NUR  3204 002,0,0,,,,,38.0,44.0,,,,
+"Student, 5",3413,1245848,1245848,NUR  3204 002,0,0,,,,,36.0,44.0,,,,
