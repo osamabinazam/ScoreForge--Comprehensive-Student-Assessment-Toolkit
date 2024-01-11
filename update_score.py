@@ -230,7 +230,7 @@ def enter_questions_for_credit():
             if not correct_answers_input.replace(",", "").isalnum():
                 raise ValueError("Invalid format for answers. Please enter letters separated by commas.")
 
-            correct_answers = [answer.strip().upper() for answer in correct_answers_input.split(',')]
+            correct_answers = [answer.strip() for answer in correct_answers_input.split(',')]
 
             points_input = input(f"Enter point value for question {question} (e.g., 5, 2.5): ")
             points = float(points_input)
