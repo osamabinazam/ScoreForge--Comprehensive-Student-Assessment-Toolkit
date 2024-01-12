@@ -227,10 +227,10 @@ def enter_questions_for_credit():
                 raise ValueError("Invalid question number. Please enter a numeric value.")
 
             correct_answers_input = input(f"Enter correct answers for question {question} (e.g., Answer-one,Answer-2,Answer-3) separated by commas: ")
-            if not correct_answers_input.replace(",", "").isalnum():
-                raise ValueError("Invalid format for answers. Please enter letters separated by commas.")
-
             correct_answers = [answer.strip() for answer in correct_answers_input.split(',')]
+            # Check if the answers are not empty
+            if not any(correct_answers):
+                raise ValueError("Invalid format for answers. Please enter at least one valid answer.")
 
             points_input = input(f"Enter point value for question {question} (e.g., 5, 2.5): ")
             points = float(points_input)
@@ -338,10 +338,26 @@ def update_student_scores(question_file, questions_for_credit):
                         matched_answers.append(answer)
                 total_points = round(len(matched_answers) * points_per_answer, 2)
 
-                row['Points Received'] = total_points
-                row['Is Correct'] = 'Partial' if total_points > 0  and total_points <int(row['Points Possible']) else row['Is Correct']
                 row['Points Possible'] = question_info['points']
+                row['Points Received'] = total_points
+                if total_points == row['Points Possible']:
+                    row['Is Correct'] = 'Correct'
+                elif total_points> 0 and total_points< row['Points Possible']:
+                    row['Is Correct'] = 'Partial'
+                else:
+                    row['Is Correct']  = 'In Correct'
                 row['Key'] = question_info['correct_answers']
+
+                print(f"Question {row['Question Number']} updated with points: {total_points} and correct answers: {matched_answers}")
+                print(row['Student Answer'])
+                print(row['Key'])
+                print(row['Points Possible'])
+                print(row['Points Received'])
+                print(row['Is Correct'])
+                print("\n\n")
+
+                sleep(3)
+                
 
             else:
                
